@@ -1,0 +1,72 @@
+tutorialdjango$ python manage.py migrate blog
+-> realizando migração do blog
+
+
+-> iniciando servidor
+python manage.py runserver
+
+
+tutorialdjango$ python manage.py createsuperuser
+-> criando um superusuario
+
+
+>> API acesso banco de dados <<
+pip install ipython
+
+In [3]: from blog.models import Post
+
+In [4]: posts = Post.objects.all()
+
+In [5]: posts
+Out[5]: <QuerySet [<Post: meu primeiro artigo>, <Post: receita ovo frito>]>
+
+In [6]: post = Post.objects.get(id=1)
+
+In [7]: post
+Out[7]: <Post: meu primeiro artigo>
+
+In [9]: post.autor
+Out[9]: <User: giordano>
+
+In [10]: post.created
+Out[10]: datetime.datetime(2022, 2, 12, 0, 5, 14, 804628, tzinfo=datetime.timezone.utc)
+
+In [11]: post.titulo
+Out[11]: 'meu primeiro artigo'
+
+In [12]: post.titulo = 'Meu Primeiro Artigo!'
+
+In [13]: post.titulo
+Out[13]: 'Meu Primeiro Artigo!'
+
+In [14]: post.save()
+
+In [15]: Post.objects.filter(autor__username="giordano")
+Out[15]: <QuerySet [<Post: Meu Primeiro Artigo!>, <Post: receita ovo frito>]>
+
+In [16]: Post.objects.filter(autor__username="user1")
+Out[16]: <QuerySet []>
+
+In [17]: from django.contrib.auth.models import User
+
+In [18]: user = User.objects.get(username="giordano")
+
+In [19]: user
+Out[19]: <User: giordano>
+
+In [20]: user.post_set.all()
+Out[20]: <QuerySet [<Post: Meu Primeiro Artigo!>, <Post: receita ovo frito>]>
+
+
+>> views genéricas <<
+# DetailView -> mostra somente 1 post
+# ListView -> listar os posts 
+
+
+>> Conectando uma URL a uma view <<
+path("blog/", include("blog.urls", namespace="blog"))
+
+
+
+
+
